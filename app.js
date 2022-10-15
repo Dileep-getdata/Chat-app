@@ -20,6 +20,8 @@ app.get('/',(req,res,next)=>{
    res.send(`<form action="/" 
    onsubmit="document.getElementById('Username').value=localStorage.getItem('Username')" 
    method="post">
+   <p>${fs.readFileSync('./username.txt',
+   {encoding:'utf8', flag:'r'})}</p>
    <input type="text" id="message" name="message">
    <input type="hidden" id="Username" name="Username">
    <button type="submit">Send</button></form>`);
@@ -28,7 +30,9 @@ app.get('/',(req,res,next)=>{
 
 app.post('/',(req,res,next)=>{
     // console.log(req.body);
-    fs.writeFile('username.txt',`${req.body.Username}:${req.body.message} `,(err)=>{
+    const data = fs.readFileSync('./username.txt',
+{encoding:'utf8', flag:'r'});
+    fs.writeFile('username.txt',` ${data} ${req.body.Username}:${req.body.message} `,(err)=>{
         if(err){
             console.log(err);
         }
